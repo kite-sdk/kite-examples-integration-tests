@@ -29,6 +29,7 @@
 
   <modules>
     <module>dataset</module>
+    <module>logging</module>
   </modules>
 
   <build>
