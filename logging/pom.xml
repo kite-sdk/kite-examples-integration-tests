@@ -32,6 +32,12 @@
   <dependencies>
     <dependency>
       <groupId>com.cloudera.cdk.examples</groupId>
+      <artifactId>common-integration-tests</artifactId>
+      <version>0.6.1-SNAPSHOT</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.cloudera.cdk.examples</groupId>
       <artifactId>logging</artifactId>
       <version>0.6.1-SNAPSHOT</version>
       <scope>test</scope>

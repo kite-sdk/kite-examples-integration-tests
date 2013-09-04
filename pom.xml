@@ -28,6 +28,7 @@
   <name>CDK Examples Integration Tests</name>
 
   <modules>
+    <module>common</module>
     <module>dataset</module>
     <module>logging</module>
     <module>logging-webapp</module>

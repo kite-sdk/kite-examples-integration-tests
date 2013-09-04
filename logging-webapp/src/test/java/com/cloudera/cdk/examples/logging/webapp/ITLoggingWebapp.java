@@ -18,19 +18,16 @@ package com.cloudera.cdk.examples.logging.webapp;
 import com.cloudera.cdk.examples.logging.CreateDataset;
 import com.cloudera.cdk.examples.logging.DropDataset;
 import com.cloudera.cdk.examples.logging.ReadDataset;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
 import org.apache.catalina.core.AprLifecycleListener;
 import org.apache.catalina.core.StandardServer;
 import org.apache.catalina.startup.Tomcat;
-import org.apache.hadoop.util.Tool;
 import org.apache.http.client.fluent.Request;
-import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static com.cloudera.cdk.examples.common.TestUtil.run;
 import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -92,28 +89,4 @@ public class ITLoggingWebapp {
         .getStatusCode(), equalTo(200));
   }
 
-  private static void run(Tool tool, String... args) throws Exception {
-    run(equalTo(0), any(String.class), tool, args);
-  }
-
-  private static void run(Matcher<String> stdOutMatcher, Tool tool,
-      String... args) throws Exception {
-    run(equalTo(0), stdOutMatcher, tool, args);
-  }
-
-  private static void run(Matcher<Integer> exitCodeMatcher,
-      Matcher<String> stdOutMatcher,
-      Tool tool,
-      String... args) throws Exception {
-    PrintStream oldStdOut = System.out;
-    try {
-      ByteArrayOutputStream out = new ByteArrayOutputStream();
-      System.setOut(new PrintStream(out));
-      int rc = tool.run(args);
-      assertThat(rc, exitCodeMatcher);
-      assertThat(out.toString(), stdOutMatcher);
-    } finally {
-      System.setOut(oldStdOut);
-    }
-  }
 }

@@ -19,7 +19,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>dataset-integration-tests</artifactId>
+  <artifactId>common-integration-tests</artifactId>
 
   <parent>
     <groupId>com.cloudera.cdk.examples</groupId>
@@ -27,20 +27,20 @@
     <version>0.6.1-SNAPSHOT</version>
   </parent>
 
-  <name>CDK Dataset Examples Integration Tests</name>
+  <name>CDK Common Integration Tests</name>
 
   <dependencies>
     <dependency>
-      <groupId>com.cloudera.cdk.examples</groupId>
-      <artifactId>common-integration-tests</artifactId>
-      <version>0.6.1-SNAPSHOT</version>
-      <scope>test</scope>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-client</artifactId>
+      <version>2.0.0-mr1-cdh4.3.0</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>com.cloudera.cdk.examples</groupId>
-      <artifactId>dataset</artifactId>
-      <version>0.6.1-SNAPSHOT</version>
-      <scope>test</scope>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.10</version>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
 
