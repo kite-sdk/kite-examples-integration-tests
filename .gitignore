@@ -4,3 +4,5 @@
 target
 .idea
 *.iml
+logging-webapp/logging-webapp
+logging-webapp/work
