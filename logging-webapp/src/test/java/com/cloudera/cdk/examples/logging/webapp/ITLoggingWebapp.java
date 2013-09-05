@@ -16,7 +16,7 @@
 package com.cloudera.cdk.examples.logging.webapp;
 
 import com.cloudera.cdk.examples.logging.CreateDataset;
-import com.cloudera.cdk.examples.logging.DropDataset;
+import com.cloudera.cdk.examples.logging.DeleteDataset;
 import com.cloudera.cdk.examples.logging.ReadDataset;
 import java.io.IOException;
 import org.apache.catalina.core.AprLifecycleListener;
@@ -39,8 +39,8 @@ public class ITLoggingWebapp {
 
   @Before
   public void setUp() throws Exception {
-    // drop dataset in case it already exists
-    run(any(Integer.class), any(String.class), new DropDataset());
+    // delete dataset in case it already exists
+    run(any(Integer.class), any(String.class), new DeleteDataset());
 
     startTomcat();
   }
@@ -53,7 +53,7 @@ public class ITLoggingWebapp {
     }
     Thread.sleep(30000); // wait for events to be flushed to HDFS
     run(containsString("{\"id\": 10, \"message\": \"Hello-10\"}"), new ReadDataset());
-    run(new DropDataset());
+    run(new DeleteDataset());
   }
 
   @After

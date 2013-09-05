@@ -24,7 +24,7 @@
   <parent>
     <groupId>com.cloudera.cdk.examples</groupId>
     <artifactId>integration-tests</artifactId>
-    <version>0.6.1-SNAPSHOT</version>
+    <version>0.7.0-SNAPSHOT</version>
   </parent>
 
   <name>CDK Logging Examples Integration Tests</name>
@@ -33,13 +33,13 @@
     <dependency>
       <groupId>com.cloudera.cdk.examples</groupId>
       <artifactId>common-integration-tests</artifactId>
-      <version>0.6.1-SNAPSHOT</version>
+      <version>${project.parent.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.cloudera.cdk.examples</groupId>
       <artifactId>logging</artifactId>
-      <version>0.6.1-SNAPSHOT</version>
+      <version>${cdk-version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

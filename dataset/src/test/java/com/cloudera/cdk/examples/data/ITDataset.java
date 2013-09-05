@@ -26,23 +26,23 @@ public class ITDataset {
 
   @Before
   public void setUp() throws Exception {
-    // drop datasets in case they already exist
-    run(any(Integer.class), any(String.class), new DropProductDataset());
-    run(any(Integer.class), any(String.class), new DropUserDataset());
+    // delete datasets in case they already exist
+    run(any(Integer.class), any(String.class), new DeleteProductDataset());
+    run(any(Integer.class), any(String.class), new DeleteUserDataset());
   }
 
   @Test
   public void testProductDatasetPojo() throws Exception {
     run(new CreateProductDatasetPojo());
     run(containsString("Product{name=toaster, id=0}"), new ReadProductDatasetPojo());
-    run(new DropProductDataset());
+    run(new DeleteProductDataset());
   }
 
   @Test
   public void testUserDatasetGeneric() throws Exception {
     run(new CreateUserDatasetGeneric());
     run(containsString("\"username\": \"user-0\""), new ReadUserDatasetGeneric());
-    run(new DropUserDataset());
+    run(new DeleteUserDataset());
   }
 
   @Test
@@ -51,21 +51,21 @@ public class ITDataset {
     run(containsString("\"username\": \"user-0\""), new ReadUserDatasetGeneric());
     run(containsString("\"username\": \"user-8\""),
         new ReadUserDatasetGenericOnePartition());
-    run(new DropUserDataset());
+    run(new DeleteUserDataset());
   }
 
   @Test
   public void testUserDatasetGenericParquet() throws Exception {
     run(new CreateUserDatasetGenericParquet());
     run(containsString("\"username\": \"user-0\""), new ReadUserDatasetGeneric());
-    run(new DropUserDataset());
+    run(new DeleteUserDataset());
   }
 
   @Test
   public void testHCatalogUserDatasetGeneric() throws Exception {
     run(new CreateHCatalogUserDatasetGeneric());
     run(containsString("\"username\": \"user-0\""), new ReadHCatalogUserDatasetGeneric());
-    run(new DropHCatalogUserDataset());
+    run(new DeleteHCatalogUserDataset());
   }
 
 }

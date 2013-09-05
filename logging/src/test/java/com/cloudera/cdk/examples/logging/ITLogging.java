@@ -26,8 +26,8 @@ public class ITLogging {
 
   @Before
   public void setUp() throws Exception {
-    // drop dataset in case it already exists
-    run(any(Integer.class), any(String.class), new DropDataset());
+    // delete dataset in case it already exists
+    run(any(Integer.class), any(String.class), new DeleteDataset());
   }
 
   @Test
@@ -36,7 +36,7 @@ public class ITLogging {
     run(new App());
     Thread.sleep(30000); // wait for events to be flushed to HDFS
     run(containsString("{\"id\": 9, \"message\": \"Hello 9\"}"), new ReadDataset());
-    run(new DropDataset());
+    run(new DeleteDataset());
   }
 
 }
