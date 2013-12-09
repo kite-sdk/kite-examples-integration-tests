@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.cloudera.cdk.examples.data;
+package org.kitesdk.examples.data;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.cloudera.cdk.examples.common.TestUtil.run;
+import static org.kitesdk.examples.common.TestUtil.run;
 import static org.hamcrest.CoreMatchers.any;
 import static org.junit.matchers.JUnitMatchers.containsString;
 

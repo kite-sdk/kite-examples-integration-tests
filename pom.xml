@@ -20,12 +20,12 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.cloudera.cdk.examples</groupId>
+  <groupId>org.kitesdk.examples</groupId>
   <artifactId>integration-tests</artifactId>
   <version>0.9.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>CDK Examples Integration Tests</name>
+  <name>Kite Examples Integration Tests</name>
 
   <modules>
     <module>common</module>
@@ -35,8 +35,8 @@
   </modules>
 
   <properties>
-    <!-- Keep this updated to the latest CDK release! -->
-    <cdk-version>0.9.1-SNAPSHOT</cdk-version>
+    <!-- Keep this updated to the latest Kite release! -->
+    <kite-version>0.9.1-SNAPSHOT</kite-version>
   </properties>
 
   <build>

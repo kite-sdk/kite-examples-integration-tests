@@ -1,8 +1,8 @@
-# Cloudera Development Kit Examples Integration Tests
+# Kite Examples Integration Tests
 
-A set of integration tests for the [CDK Examples](https://github.com/cloudera/cdk-examples).
+A set of integration tests for the [Kite Examples](https://github.com/kite-sdk/kite-examples).
 
-To run, [set up the QuickStart VM](https://github.com/cloudera/cdk-examples/blob/master/README.md#getting-started), then type
+To run, [set up the QuickStart VM](https://github.com/kite-sdk/kite-examples/blob/master/README.md#getting-started), then type
 
 ```bash
 mvn verify

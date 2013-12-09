@@ -22,12 +22,12 @@
   <artifactId>common-integration-tests</artifactId>
 
   <parent>
-    <groupId>com.cloudera.cdk.examples</groupId>
+    <groupId>org.kitesdk.examples</groupId>
     <artifactId>integration-tests</artifactId>
     <version>0.9.1-SNAPSHOT</version>
   </parent>
 
-  <name>CDK Common Integration Tests</name>
+  <name>Kite Common Integration Tests</name>
 
   <dependencies>
     <dependency>

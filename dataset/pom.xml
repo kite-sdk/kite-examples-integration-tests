@@ -22,24 +22,24 @@
   <artifactId>dataset-integration-tests</artifactId>
 
   <parent>
-    <groupId>com.cloudera.cdk.examples</groupId>
+    <groupId>org.kitesdk.examples</groupId>
     <artifactId>integration-tests</artifactId>
     <version>0.9.1-SNAPSHOT</version>
   </parent>
 
-  <name>CDK Dataset Examples Integration Tests</name>
+  <name>Kite Dataset Examples Integration Tests</name>
 
   <dependencies>
     <dependency>
-      <groupId>com.cloudera.cdk.examples</groupId>
+      <groupId>org.kitesdk.examples</groupId>
       <artifactId>common-integration-tests</artifactId>
       <version>${project.parent.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.cloudera.cdk.examples</groupId>
+      <groupId>org.kitesdk.examples</groupId>
       <artifactId>dataset</artifactId>
-      <version>${cdk-version}</version>
+      <version>${kite-version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

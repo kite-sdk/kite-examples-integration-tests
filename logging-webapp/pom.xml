@@ -22,24 +22,24 @@
   <artifactId>logging-webapp-integration-tests</artifactId>
 
   <parent>
-    <groupId>com.cloudera.cdk.examples</groupId>
+    <groupId>org.kitesdk.examples</groupId>
     <artifactId>integration-tests</artifactId>
     <version>0.9.1-SNAPSHOT</version>
   </parent>
 
-  <name>CDK Logging Webapp Examples Integration Tests</name>
+  <name>Kite Logging Webapp Examples Integration Tests</name>
 
   <dependencies>
     <dependency>
-      <groupId>com.cloudera.cdk.examples</groupId>
+      <groupId>org.kitesdk.examples</groupId>
       <artifactId>common-integration-tests</artifactId>
       <version>${project.parent.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.cloudera.cdk.examples</groupId>
+      <groupId>org.kitesdk.examples</groupId>
       <artifactId>logging</artifactId>
-      <version>${cdk-version}</version>
+      <version>${kite-version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -84,9 +84,9 @@
             <configuration>
               <artifactItems>
                 <artifactItem>
-                  <groupId>com.cloudera.cdk.examples</groupId>
+                  <groupId>org.kitesdk.examples</groupId>
                   <artifactId>logging-webapp</artifactId>
-                  <version>${cdk-version}</version>
+                  <version>${kite-version}</version>
                   <type>war</type>
                   <destFileName>logging-webapp.war</destFileName>
                 </artifactItem>

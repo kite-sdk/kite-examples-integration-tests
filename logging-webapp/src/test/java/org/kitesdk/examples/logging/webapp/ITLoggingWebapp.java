@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.cloudera.cdk.examples.logging.webapp;
+package org.kitesdk.examples.logging.webapp;
 
-import com.cloudera.cdk.examples.logging.CreateDataset;
-import com.cloudera.cdk.examples.logging.DeleteDataset;
-import com.cloudera.cdk.examples.logging.ReadDataset;
+import org.kitesdk.examples.logging.CreateDataset;
+import org.kitesdk.examples.logging.DeleteDataset;
+import org.kitesdk.examples.logging.ReadDataset;
 import java.io.IOException;
 import org.apache.catalina.core.AprLifecycleListener;
 import org.apache.catalina.core.StandardServer;
@@ -27,7 +27,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.cloudera.cdk.examples.common.TestUtil.run;
+import static org.kitesdk.examples.common.TestUtil.run;
 import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
