@@ -34,7 +34,7 @@ public class ITLogging {
   public void test() throws Exception {
     run(new CreateDataset());
     run(new App());
-    Thread.sleep(30000); // wait for events to be flushed to HDFS
+    Thread.sleep(40000); // wait for events to be flushed to HDFS
     run(containsString("{\"id\": 9, \"message\": \"Hello 9\"}"), new ReadDataset());
     run(new DeleteDataset());
   }

@@ -51,7 +51,7 @@ public class ITLoggingWebapp {
     for (int i = 1; i <= 10; i++) {
       get("http://localhost:8080/logging-webapp/send?message=Hello-" + i);
     }
-    Thread.sleep(30000); // wait for events to be flushed to HDFS
+    Thread.sleep(40000); // wait for events to be flushed to HDFS
     run(containsString("{\"id\": 10, \"message\": \"Hello-10\"}"), new ReadDataset());
     run(new DeleteDataset());
   }
