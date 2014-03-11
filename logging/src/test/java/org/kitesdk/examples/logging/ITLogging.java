@@ -18,15 +18,19 @@ package org.kitesdk.examples.logging;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.google.common.io.Resources;
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
 import org.apache.flume.Context;
-import org.apache.flume.agent.embedded.EmbeddedAgent;
 import org.apache.flume.conf.FlumeConfiguration;
+import org.apache.flume.node.Application;
+import org.apache.flume.node.PropertiesFileConfigurationProvider;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.kitesdk.examples.common.TestUtil.run;
 import static org.hamcrest.CoreMatchers.any;
@@ -34,7 +38,10 @@ import static org.junit.matchers.JUnitMatchers.containsString;
 
 public class ITLogging {
 
-  private EmbeddedAgent flumeAgent;
+  private static final Logger logger = LoggerFactory
+      .getLogger(ITLogging.class);
+
+  private Application application;
 
   @Before
   public void setUp() throws Exception {
@@ -49,40 +56,26 @@ public class ITLogging {
     stopFlume();
   }
 
-  private void startFlume() throws IOException {
-    flumeAgent = new EmbeddedAgent("tier1");
-    Properties properties = new Properties();
-    properties.load(Resources.getResource("flume.properties").openStream());
-    properties.setProperty("tier1.sinks.sink-1.hdfs.proxyUser",
-        System.getProperty("user.name"));
+  private void startFlume() throws Exception {
 
-    FlumeConfiguration conf = new FlumeConfiguration(properties);
-    FlumeConfiguration.AgentConfiguration agentConfiguration = conf.getConfigurationFor("tier1");
-    Map<String, String> embeddedAgentConfiguration = Maps.newHashMap();
+    logger.info("startFlume"); // this seems to be needed for it to work...
 
-    Context channelContext = Iterables.getOnlyElement(agentConfiguration.getChannelContext().entrySet()).getValue();
-    for (Map.Entry<String, String> e : channelContext.getParameters().entrySet()) {
-      embeddedAgentConfiguration.put("channel." + e.getKey(), e.getValue());
-    }
-    Context sourceContext = Iterables.getOnlyElement(agentConfiguration
-        .getSourceContext().entrySet()).getValue();
-    for (Map.Entry<String, String> e : sourceContext.getParameters().entrySet()) {
-      embeddedAgentConfiguration.put("source." + e.getKey(), e.getValue());
-    }
-    Context sinkContext = Iterables.getOnlyElement(agentConfiguration.getSinkContext()
-        .entrySet()).getValue();
-    for (Map.Entry<String, String> e : sinkContext.getParameters().entrySet()) {
-      embeddedAgentConfiguration.put("sink." + e.getKey(), e.getValue());
-    }
-    System.out.println(agentConfiguration.getChannelContext());
-    System.out.println(embeddedAgentConfiguration);
+    String agentName = "tier1";
+    File configurationFile = new File
+        ("/Users/tom/workspace/kite-examples-integration-tests/logging/src/test/resources/flume.properties");
+    PropertiesFileConfigurationProvider configurationProvider =
+        new PropertiesFileConfigurationProvider(agentName,
+            configurationFile);
+    application = new Application();
+    application.handleConfigurationEvent(configurationProvider.getConfiguration());
 
-    flumeAgent.configure(embeddedAgentConfiguration);
-    flumeAgent.start();
+    application.start();
+
+    Thread.sleep(30000L);
   }
 
   private void stopFlume() {
-    flumeAgent.stop();
+    application.stop();
   }
 
   @Test

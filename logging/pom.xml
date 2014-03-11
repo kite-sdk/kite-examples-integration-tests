@@ -44,10 +44,28 @@
     </dependency>
     <dependency>
       <groupId>org.apache.flume</groupId>
-      <artifactId>flume-ng-embedded-agent</artifactId>
+      <artifactId>flume-ng-node</artifactId>
       <version>1.4.0-cdh4.4.0</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>1.6.1</version>
+      <scope>test</scope>
+    </dependency>
+    <!--<dependency>-->
+      <!--<groupId>org.apache.avro</groupId>-->
+      <!--<artifactId>avro</artifactId>-->
+      <!--<version>1.7.4</version>-->
+      <!--<scope>test</scope>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>org.apache.avro</groupId>-->
+      <!--<artifactId>avro-ipc</artifactId>-->
+      <!--<version>1.7.4</version>-->
+      <!--<scope>test</scope>-->
+    <!--</dependency>-->
   </dependencies>
 
 </project>
