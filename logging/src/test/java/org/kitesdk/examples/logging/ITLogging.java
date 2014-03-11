@@ -26,9 +26,11 @@ import org.apache.flume.Context;
 import org.apache.flume.conf.FlumeConfiguration;
 import org.apache.flume.node.Application;
 import org.apache.flume.node.PropertiesFileConfigurationProvider;
+import org.apache.log4j.Level;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.kitesdk.data.flume.Log4jAppender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,7 +73,20 @@ public class ITLogging {
 
     application.start();
 
-    Thread.sleep(30000L);
+    Thread.sleep(10000L);
+
+    Log4jAppender appender = new Log4jAppender();
+    appender.setName("flume");
+    appender.setHostname("localhost");
+    appender.setPort(41416);
+    appender.setDatasetRepositoryUri("repo:hdfs://localhost/tmp/data");
+    appender.setDatasetName("events");
+    appender.activateOptions();
+
+    org.apache.log4j.Logger.getLogger(org.kitesdk.examples.logging.App.class).addAppender(appender);
+    org.apache.log4j.Logger.getLogger(org.kitesdk.examples.logging.App.class).setLevel
+        (Level.INFO);
+
   }
 
   private void stopFlume() {
