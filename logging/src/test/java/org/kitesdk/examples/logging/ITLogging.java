@@ -15,12 +15,15 @@
  */
 package org.kitesdk.examples.logging;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.google.common.io.Resources;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
+import org.apache.flume.Context;
 import org.apache.flume.agent.embedded.EmbeddedAgent;
+import org.apache.flume.conf.FlumeConfiguration;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,7 +55,29 @@ public class ITLogging {
     properties.load(Resources.getResource("flume.properties").openStream());
     properties.setProperty("tier1.sinks.sink-1.hdfs.proxyUser",
         System.getProperty("user.name"));
-    flumeAgent.configure(Maps.fromProperties(properties));
+
+    FlumeConfiguration conf = new FlumeConfiguration(properties);
+    FlumeConfiguration.AgentConfiguration agentConfiguration = conf.getConfigurationFor("tier1");
+    Map<String, String> embeddedAgentConfiguration = Maps.newHashMap();
+
+    Context channelContext = Iterables.getOnlyElement(agentConfiguration.getChannelContext().entrySet()).getValue();
+    for (Map.Entry<String, String> e : channelContext.getParameters().entrySet()) {
+      embeddedAgentConfiguration.put("channel." + e.getKey(), e.getValue());
+    }
+    Context sourceContext = Iterables.getOnlyElement(agentConfiguration
+        .getSourceContext().entrySet()).getValue();
+    for (Map.Entry<String, String> e : sourceContext.getParameters().entrySet()) {
+      embeddedAgentConfiguration.put("source." + e.getKey(), e.getValue());
+    }
+    Context sinkContext = Iterables.getOnlyElement(agentConfiguration.getSinkContext()
+        .entrySet()).getValue();
+    for (Map.Entry<String, String> e : sinkContext.getParameters().entrySet()) {
+      embeddedAgentConfiguration.put("sink." + e.getKey(), e.getValue());
+    }
+    System.out.println(agentConfiguration.getChannelContext());
+    System.out.println(embeddedAgentConfiguration);
+
+    flumeAgent.configure(embeddedAgentConfiguration);
     flumeAgent.start();
   }
 
