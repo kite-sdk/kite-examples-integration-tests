@@ -15,20 +15,15 @@
  */
 package org.kitesdk.examples.logging;
 
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Maps;
-import com.google.common.io.Resources;
 import java.io.File;
-import java.io.IOException;
-import java.util.Map;
-import java.util.Properties;
-import org.apache.flume.Context;
-import org.apache.flume.conf.FlumeConfiguration;
 import org.apache.flume.node.Application;
 import org.apache.flume.node.PropertiesFileConfigurationProvider;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hdfs.MiniDFSCluster;
 import org.apache.log4j.Level;
-import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kitesdk.data.flume.Log4jAppender;
 import org.slf4j.Logger;
@@ -43,22 +38,32 @@ public class ITLogging {
   private static final Logger logger = LoggerFactory
       .getLogger(ITLogging.class);
 
-  private Application application;
+
+  private static MiniDFSCluster hdfsCluster;
+  private static Application flumeApplication;
+
+  @BeforeClass
+  public static void startCluster() throws Exception {
+    hdfsCluster = new MiniDFSCluster.Builder(new Configuration()).nameNodePort(8020).build();
+    startFlume();
+  }
 
   @Before
   public void setUp() throws Exception {
     // delete dataset in case it already exists
     run(any(Integer.class), any(String.class), new DeleteDataset());
-
-    startFlume();
   }
 
-  @After
-  public void tearDown() throws Exception {
+  @AfterClass
+  public static void stopCluster() throws Exception {
     stopFlume();
+    if (hdfsCluster != null) {
+      hdfsCluster.shutdown();
+      hdfsCluster = null;
+    }
   }
 
-  private void startFlume() throws Exception {
+  private static void startFlume() throws Exception {
 
     logger.info("startFlume"); // this seems to be needed for it to work...
 
@@ -68,10 +73,10 @@ public class ITLogging {
     PropertiesFileConfigurationProvider configurationProvider =
         new PropertiesFileConfigurationProvider(agentName,
             configurationFile);
-    application = new Application();
-    application.handleConfigurationEvent(configurationProvider.getConfiguration());
+    flumeApplication = new Application();
+    flumeApplication.handleConfigurationEvent(configurationProvider.getConfiguration());
 
-    application.start();
+    flumeApplication.start();
 
     Thread.sleep(10000L);
 
@@ -89,8 +94,8 @@ public class ITLogging {
 
   }
 
-  private void stopFlume() {
-    application.stop();
+  private static void stopFlume() {
+    flumeApplication.stop();
   }
 
   @Test

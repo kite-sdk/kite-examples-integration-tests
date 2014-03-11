@@ -15,7 +15,12 @@
  */
 package org.kitesdk.examples.data;
 
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hdfs.MiniDFSCluster;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.kitesdk.examples.common.TestUtil.run;
@@ -24,11 +29,26 @@ import static org.junit.matchers.JUnitMatchers.containsString;
 
 public class ITDataset {
 
+  private static MiniDFSCluster hdfsCluster;
+
+  @BeforeClass
+  public static void startCluster() throws Exception {
+    hdfsCluster = new MiniDFSCluster.Builder(new Configuration()).nameNodePort(8020).build();
+  }
+
   @Before
   public void setUp() throws Exception {
     // delete datasets in case they already exist
     run(any(Integer.class), any(String.class), new DeleteProductDataset());
     run(any(Integer.class), any(String.class), new DeleteUserDataset());
+  }
+
+  @AfterClass
+  public static void stopCluster() throws Exception {
+    if (hdfsCluster != null) {
+      hdfsCluster.shutdown();
+      hdfsCluster = null;
+    }
   }
 
   @Test
@@ -62,6 +82,7 @@ public class ITDataset {
   }
 
   @Test
+  @Ignore
   public void testHCatalogUserDatasetGeneric() throws Exception {
     run(new CreateHCatalogUserDatasetGeneric());
     run(containsString("\"username\": \"user-0\""), new ReadHCatalogUserDatasetGeneric());
