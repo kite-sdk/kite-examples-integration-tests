@@ -18,14 +18,13 @@ package org.kitesdk.examples.logging;
 import java.io.File;
 import org.apache.flume.node.Application;
 import org.apache.flume.node.PropertiesFileConfigurationProvider;
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.hdfs.MiniDFSCluster;
 import org.apache.log4j.Level;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kitesdk.data.flume.Log4jAppender;
+import org.kitesdk.examples.common.Cluster;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,12 +38,13 @@ public class ITLogging {
       .getLogger(ITLogging.class);
 
 
-  private static MiniDFSCluster hdfsCluster;
+  private static Cluster cluster;
   private static Application flumeApplication;
 
   @BeforeClass
   public static void startCluster() throws Exception {
-    hdfsCluster = new MiniDFSCluster.Builder(new Configuration()).nameNodePort(8020).build();
+    cluster = new Cluster.Builder().addHdfsService().build();
+    cluster.start();
     startFlume();
   }
 
@@ -57,10 +57,7 @@ public class ITLogging {
   @AfterClass
   public static void stopCluster() throws Exception {
     stopFlume();
-    if (hdfsCluster != null) {
-      hdfsCluster.shutdown();
-      hdfsCluster = null;
-    }
+    cluster.stop();
   }
 
   private static void startFlume() throws Exception {

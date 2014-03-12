@@ -15,13 +15,12 @@
  */
 package org.kitesdk.examples.data;
 
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.hdfs.MiniDFSCluster;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.kitesdk.examples.common.Cluster;
 
 import static org.kitesdk.examples.common.TestUtil.run;
 import static org.hamcrest.CoreMatchers.any;
@@ -29,11 +28,12 @@ import static org.junit.matchers.JUnitMatchers.containsString;
 
 public class ITDataset {
 
-  private static MiniDFSCluster hdfsCluster;
+  private static Cluster cluster;
 
   @BeforeClass
   public static void startCluster() throws Exception {
-    hdfsCluster = new MiniDFSCluster.Builder(new Configuration()).nameNodePort(8020).build();
+    cluster = new Cluster.Builder().addHdfsService().build();
+    cluster.start();
   }
 
   @Before
@@ -45,10 +45,7 @@ public class ITDataset {
 
   @AfterClass
   public static void stopCluster() throws Exception {
-    if (hdfsCluster != null) {
-      hdfsCluster.shutdown();
-      hdfsCluster = null;
-    }
+    cluster.stop();
   }
 
   @Test
