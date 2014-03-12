@@ -37,6 +37,11 @@ public class Cluster {
       return this;
     }
 
+    public Builder addHiveMetastoreService() {
+      services.add(new HiveMetastoreService());
+      return this;
+    }
+
     public Builder addFlumeAgent(String agentName, File configurationFile) {
       services.add(new FlumeAgentService(agentName, configurationFile));
       return this;

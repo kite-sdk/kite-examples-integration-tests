@@ -66,7 +66,7 @@ public class ITLogging {
 
   private static void configureLog4j() throws Exception {
     // configuration is done programmatically and not in log4j.properties so that so we
-    // can defer initialization to after when the Flume Avro RPC source port is running
+    // can defer initialization to after the Flume Avro RPC source port is running
     Log4jAppender appender = new Log4jAppender();
     appender.setName("flume");
     appender.setHostname("localhost");
