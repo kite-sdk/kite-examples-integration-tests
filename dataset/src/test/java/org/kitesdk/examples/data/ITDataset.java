@@ -18,7 +18,6 @@ package org.kitesdk.examples.data;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kitesdk.examples.common.Cluster;
 
@@ -51,21 +50,21 @@ public class ITDataset {
     cluster.stop();
   }
 
-  //@Test
+  @Test
   public void testProductDatasetPojo() throws Exception {
     run(new CreateProductDatasetPojo());
     run(containsString("Product{name=toaster, id=0}"), new ReadProductDatasetPojo());
     run(new DeleteProductDataset());
   }
 
-  //@Test
+  @Test
   public void testUserDatasetGeneric() throws Exception {
     run(new CreateUserDatasetGeneric());
     run(containsString("\"username\": \"user-0\""), new ReadUserDatasetGeneric());
     run(new DeleteUserDataset());
   }
 
-  //@Test
+  @Test
   public void testUserDatasetGenericPartitioned() throws Exception {
     run(new CreateUserDatasetGenericPartitioned());
     run(containsString("\"username\": \"user-0\""), new ReadUserDatasetGeneric());
@@ -74,7 +73,7 @@ public class ITDataset {
     run(new DeleteUserDataset());
   }
 
-  //@Test
+  @Test
   public void testUserDatasetGenericParquet() throws Exception {
     run(new CreateUserDatasetGenericParquet());
     run(containsString("\"username\": \"user-0\""), new ReadUserDatasetGeneric());
