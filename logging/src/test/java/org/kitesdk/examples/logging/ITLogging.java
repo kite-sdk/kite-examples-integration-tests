@@ -15,18 +15,19 @@
  */
 package org.kitesdk.examples.logging;
 
+import com.google.common.io.Resources;
 import java.io.File;
-import org.apache.flume.node.Application;
-import org.apache.flume.node.PropertiesFileConfigurationProvider;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.kitesdk.data.flume.Log4jAppender;
 import org.kitesdk.examples.common.Cluster;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static org.kitesdk.examples.common.TestUtil.run;
 import static org.hamcrest.CoreMatchers.any;
@@ -34,18 +35,22 @@ import static org.junit.matchers.JUnitMatchers.containsString;
 
 public class ITLogging {
 
-  private static final Logger logger = LoggerFactory
-      .getLogger(ITLogging.class);
-
+  @Rule
+  public static TemporaryFolder folder = new TemporaryFolder();
 
   private static Cluster cluster;
-  private static Application flumeApplication;
 
   @BeforeClass
   public static void startCluster() throws Exception {
-    cluster = new Cluster.Builder().addHdfsService().build();
+    File flumeProperties = folder.newFile();
+    FileUtils.copyURLToFile(Resources.getResource("flume.properties"), flumeProperties);
+    cluster = new Cluster.Builder()
+        .addHdfsService()
+        .addFlumeAgent("tier1", flumeProperties)
+        .build();
     cluster.start();
-    startFlume();
+    Thread.sleep(5000L);
+    configureLog4j();
   }
 
   @Before
@@ -56,43 +61,22 @@ public class ITLogging {
 
   @AfterClass
   public static void stopCluster() throws Exception {
-    stopFlume();
     cluster.stop();
   }
 
-  private static void startFlume() throws Exception {
-
-    logger.info("startFlume"); // this seems to be needed for it to work...
-
-    String agentName = "tier1";
-    File configurationFile = new File
-        ("/Users/tom/workspace/kite-examples-integration-tests/logging/src/test/resources/flume.properties");
-    PropertiesFileConfigurationProvider configurationProvider =
-        new PropertiesFileConfigurationProvider(agentName,
-            configurationFile);
-    flumeApplication = new Application();
-    flumeApplication.handleConfigurationEvent(configurationProvider.getConfiguration());
-
-    flumeApplication.start();
-
-    Thread.sleep(10000L);
-
+  private static void configureLog4j() throws Exception {
+    // configuration is done programmatically and not in log4j.properties so that so we
+    // can defer initialization to after when the Flume Avro RPC source port is running
     Log4jAppender appender = new Log4jAppender();
     appender.setName("flume");
     appender.setHostname("localhost");
-    appender.setPort(41416);
+    appender.setPort(41415);
     appender.setDatasetRepositoryUri("repo:hdfs://localhost/tmp/data");
     appender.setDatasetName("events");
     appender.activateOptions();
 
-    org.apache.log4j.Logger.getLogger(org.kitesdk.examples.logging.App.class).addAppender(appender);
-    org.apache.log4j.Logger.getLogger(org.kitesdk.examples.logging.App.class).setLevel
-        (Level.INFO);
-
-  }
-
-  private static void stopFlume() {
-    flumeApplication.stop();
+    Logger.getLogger(org.kitesdk.examples.logging.App.class).addAppender(appender);
+    Logger.getLogger(org.kitesdk.examples.logging.App.class).setLevel(Level.INFO);
   }
 
   @Test

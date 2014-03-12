@@ -56,6 +56,12 @@
       <version>2.0.0-cdh4.4.0</version>
       <type>test-jar</type>
     </dependency>
+
+    <dependency>
+      <groupId>org.apache.flume</groupId>
+      <artifactId>flume-ng-node</artifactId>
+      <version>1.4.0-cdh4.4.0</version>
+    </dependency>
   </dependencies>
 
 </project>

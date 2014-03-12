@@ -37,8 +37,8 @@ public class Cluster {
       return this;
     }
 
-    public Builder addFlumeAgent(File configurationFile) {
-      services.add(new FlumeAgentService(configurationFile));
+    public Builder addFlumeAgent(String agentName, File configurationFile) {
+      services.add(new FlumeAgentService(agentName, configurationFile));
       return this;
     }
 
