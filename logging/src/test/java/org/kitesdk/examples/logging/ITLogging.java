@@ -71,7 +71,12 @@ public class ITLogging {
     appender.setName("flume");
     appender.setHostname("localhost");
     appender.setPort(41415);
-    appender.setDatasetRepositoryUri("repo:hdfs://localhost/tmp/data");
+    // TODO: without this we get "java.lang.IllegalArgumentException: Wrong FS" in Flume
+    if (Cluster.isUsingExternalCluster()) {
+      appender.setDatasetRepositoryUri("repo:hdfs://localhost.localdomain/tmp/data");
+    } else {
+      appender.setDatasetRepositoryUri("repo:hdfs://localhost/tmp/data");
+    }
     appender.setDatasetName("events");
     appender.activateOptions();
 
