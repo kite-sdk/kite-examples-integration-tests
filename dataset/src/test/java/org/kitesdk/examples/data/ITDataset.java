@@ -15,8 +15,11 @@
  */
 package org.kitesdk.examples.data;
 
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.kitesdk.examples.common.Cluster;
 
 import static org.kitesdk.examples.common.TestUtil.run;
 import static org.hamcrest.CoreMatchers.any;
@@ -24,11 +27,27 @@ import static org.junit.matchers.JUnitMatchers.containsString;
 
 public class ITDataset {
 
+  private static Cluster cluster;
+
+  @BeforeClass
+  public static void startCluster() throws Exception {
+    cluster = new Cluster.Builder()
+        .addHdfsService()
+        .addHiveMetastoreService()
+        .build();
+    cluster.start();
+  }
+
   @Before
   public void setUp() throws Exception {
     // delete datasets in case they already exist
     run(any(Integer.class), any(String.class), new DeleteProductDataset());
     run(any(Integer.class), any(String.class), new DeleteUserDataset());
+  }
+
+  @AfterClass
+  public static void stopCluster() throws Exception {
+    cluster.stop();
   }
 
   @Test

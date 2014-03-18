@@ -35,6 +35,21 @@
       <artifactId>common-integration-tests</artifactId>
       <version>${project.parent.version}</version>
       <scope>test</scope>
+      <!-- exclude servlet classes since they clash with tomcat -->
+      <exclusions>
+        <exclusion>
+          <groupId>javax.servlet</groupId>
+          <artifactId>servlet-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>javax.servlet.jsp</groupId>
+          <artifactId>jsp-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>tomcat</groupId>
+          <artifactId>jasper-runtime</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.kitesdk.examples</groupId>

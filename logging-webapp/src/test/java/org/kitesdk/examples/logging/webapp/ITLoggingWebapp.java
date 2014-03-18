@@ -15,6 +15,17 @@
  */
 package org.kitesdk.examples.logging.webapp;
 
+import com.google.common.io.Resources;
+import java.io.File;
+import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.rules.TemporaryFolder;
+import org.kitesdk.data.flume.Log4jAppender;
+import org.kitesdk.examples.common.Cluster;
 import org.kitesdk.examples.logging.CreateDataset;
 import org.kitesdk.examples.logging.DeleteDataset;
 import org.kitesdk.examples.logging.ReadDataset;
@@ -35,7 +46,25 @@ import static org.junit.matchers.JUnitMatchers.containsString;
 
 public class ITLoggingWebapp {
 
+  @Rule
+  public static TemporaryFolder folder = new TemporaryFolder();
+
+  private static Cluster cluster;
+
   private Tomcat tomcat;
+
+  @BeforeClass
+  public static void startCluster() throws Exception {
+    File flumeProperties = folder.newFile();
+    FileUtils.copyURLToFile(Resources.getResource("flume.properties"), flumeProperties);
+    cluster = new Cluster.Builder()
+        .addHdfsService()
+        .addFlumeAgent("tier1", flumeProperties)
+        .build();
+    cluster.start();
+    Thread.sleep(5000L);
+    configureLog4j();
+  }
 
   @Before
   public void setUp() throws Exception {
@@ -43,6 +72,31 @@ public class ITLoggingWebapp {
     run(any(Integer.class), any(String.class), new DeleteDataset());
 
     startTomcat();
+  }
+
+  @AfterClass
+  public static void stopCluster() throws Exception {
+    cluster.stop();
+  }
+
+  private static void configureLog4j() throws Exception {
+    // configuration is done programmatically and not in log4j.properties so that so we
+    // can defer initialization to after the Flume Avro RPC source port is running
+    Log4jAppender appender = new Log4jAppender();
+    appender.setName("flume");
+    appender.setHostname("localhost");
+    appender.setPort(41415);
+    // TODO: without this we get "java.lang.IllegalArgumentException: Wrong FS" in Flume
+    if (Cluster.isUsingExternalCluster()) {
+      appender.setDatasetRepositoryUri("repo:hdfs://localhost.localdomain/tmp/data");
+    } else {
+      appender.setDatasetRepositoryUri("repo:hdfs://localhost/tmp/data");
+    }
+    appender.setDatasetName("events");
+    appender.activateOptions();
+
+    Logger.getLogger("org.kitesdk.examples.logging.webapp.LoggingServlet").addAppender(appender);
+    Logger.getLogger("org.kitesdk.examples.logging.webapp.LoggingServlet").setLevel(Level.INFO);
   }
 
   @Test
