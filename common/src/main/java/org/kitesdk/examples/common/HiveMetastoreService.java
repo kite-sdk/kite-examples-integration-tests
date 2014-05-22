@@ -11,6 +11,7 @@ import org.apache.hadoop.hive.shims.ShimLoader;
 
 class HiveMetastoreService implements Cluster.Service {
 
+  private static final int MS_PORT = 9083;
   private Map<String, String> sysProps = Maps.newHashMap();
   private Thread serverThread;
 
@@ -27,7 +28,7 @@ class HiveMetastoreService implements Cluster.Service {
       @Override
       public void run() {
         try {
-          HiveMetaStore.startMetaStore(9083, ShimLoader.getHadoopThriftAuthBridge(),
+          HiveMetaStore.startMetaStore(MS_PORT, ShimLoader.getHadoopThriftAuthBridge(),
               serverConf);
           //LOG.info("Started metastore server on port " + msPort);
         }
@@ -52,7 +53,7 @@ class HiveMetastoreService implements Cluster.Service {
   }
 
   public void configure(Configuration conf) {
-    conf.set("hive.metastore.uris", "thrift://localhost.localdomain:9083");
+    conf.set("hive.metastore.uris", "thrift://localhost.localdomain:" + MS_PORT);
   }
 
   private void setSystemProperty(String name, String value) {
