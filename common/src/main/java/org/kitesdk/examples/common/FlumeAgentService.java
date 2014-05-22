@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import org.apache.flume.node.Application;
 import org.apache.flume.node.PropertiesFileConfigurationProvider;
+import org.apache.hadoop.conf.Configuration;
 
 class FlumeAgentService implements Cluster.Service {
 
@@ -25,5 +26,9 @@ class FlumeAgentService implements Cluster.Service {
   @Override
   public void stop() throws IOException {
     flumeApplication.stop();
+  }
+
+  public void configure(Configuration conf) {
+    // connection parameters are set in the agent config
   }
 }

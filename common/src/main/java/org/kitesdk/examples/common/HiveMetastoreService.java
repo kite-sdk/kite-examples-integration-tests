@@ -51,6 +51,9 @@ class HiveMetastoreService implements Cluster.Service {
     serverThread.stop();
   }
 
+  public void configure(Configuration conf) {
+    conf.set("hive.metastore.uris", "thrift://localhost.localdomain:9083");
+  }
 
   private void setSystemProperty(String name, String value) {
     if (!sysProps.containsKey(name)) {

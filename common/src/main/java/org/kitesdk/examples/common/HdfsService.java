@@ -6,11 +6,12 @@ import org.apache.hadoop.hdfs.MiniDFSCluster;
 
 class HdfsService implements Cluster.Service {
 
-  private MiniDFSCluster hdfsCluster;
+  private MiniDFSCluster hdfsCluster = null;
 
   @Override
   public void start() throws IOException {
-    new MiniDFSCluster.Builder(new Configuration()).nameNodePort(8020).build();
+    this.hdfsCluster = new MiniDFSCluster.Builder(new Configuration())
+        .nameNodePort(8020).build();
   }
 
   @Override
@@ -19,5 +20,10 @@ class HdfsService implements Cluster.Service {
       hdfsCluster.shutdown();
       hdfsCluster = null;
     }
+  }
+
+  @Override
+  public void configure(Configuration conf) {
+    conf.set("fs.defaultFS", hdfsCluster.getURI().toString());
   }
 }

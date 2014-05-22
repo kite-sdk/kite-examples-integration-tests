@@ -143,6 +143,17 @@
       <version>0.10.0-cdh4.4.0</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.kitesdk</groupId>
+      <artifactId>kite-tools</artifactId>
+      <version>${kite-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.kitesdk</groupId>
+      <artifactId>kite-tools</artifactId>
+      <version>${kite-version}</version>
+      <type>test-jar</type>
+    </dependency>
   </dependencies>
 
 </project>

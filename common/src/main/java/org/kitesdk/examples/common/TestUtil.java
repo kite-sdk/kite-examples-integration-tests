@@ -17,8 +17,10 @@ package org.kitesdk.examples.common;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.util.Tool;
 import org.hamcrest.Matcher;
+import org.slf4j.Logger;
 
 import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -49,5 +51,12 @@ public class TestUtil {
     } finally {
       System.setOut(oldStdOut);
     }
+  }
+
+  public static void runDatasetCommand(Configuration conf,
+                                       Matcher<Integer> exitCodeMatcher,
+                                       String arguments) throws Exception {
+    int rc = org.kitesdk.cli.TestUtil.run(conf, arguments.split(" "));
+    assertThat(rc, exitCodeMatcher);
   }
 }
