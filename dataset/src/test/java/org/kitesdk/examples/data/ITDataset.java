@@ -68,7 +68,7 @@ public class ITDataset {
   public void testUserDatasetGenericPartitioned() throws Exception {
     run(new CreateUserDatasetGenericPartitioned());
     run(containsString("\"username\": \"user-0\""), new ReadUserDatasetGeneric());
-    run(containsString("\"username\": \"user-8\""),
+    run(containsString("\"username\": \"user-"),
         new ReadUserDatasetGenericOnePartition());
     run(new DeleteUserDataset());
   }
@@ -82,9 +82,9 @@ public class ITDataset {
 
   @Test
   public void testHCatalogUserDatasetGeneric() throws Exception {
-    run(new CreateHCatalogUserDatasetGeneric());
-    run(containsString("\"username\": \"user-0\""), new ReadHCatalogUserDatasetGeneric());
-    run(new DeleteHCatalogUserDataset());
+    run(new CreateHiveUserDatasetGeneric());
+    run(containsString("\"username\": \"user-0\""), new ReadHiveUserDatasetGeneric());
+    run(new DeleteHiveUserDataset());
   }
 
 }
