@@ -37,6 +37,7 @@
   <properties>
     <!-- Keep this updated to the latest Kite release! -->
     <kite-version>0.15.1-SNAPSHOT</kite-version>
+    <hadoop.conf.dir>/etc/hadoop/conf</hadoop.conf.dir>
   </properties>
 
   <build>
@@ -88,5 +89,32 @@
       </snapshots>
     </repository>
   </repositories>
+
+  <profiles>
+    <profile>
+      <id>external-cluster</id>
+      <activation>
+        <property>
+          <name>useExternalCluster</name>
+        </property>
+      </activation>
+      <build>
+        <testResources>
+          <testResource>
+            <directory>${hadoop.conf.dir}</directory>
+            <includes>
+              <include>core-site.xml</include>
+              <include>hdfs-site.xml</include>
+              <include>yarn-site.xml</include>
+              <include>mapred-site.xml</include>
+            </includes>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources</directory>
+          </testResource>
+        </testResources>
+      </build>
+    </profile>
+  </profiles>
 
 </project>

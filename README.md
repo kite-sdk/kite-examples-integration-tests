@@ -35,3 +35,10 @@ Then type:
 mvn verify -DuseExternalCluster=true
 ```
 
+When running against an external cluster, the integration tests assume that your
+Hadoop configuration files are in `/etc/hadoop/conf`. If you need to specify a
+different directory, use:
+
+```bash
+mvn verify -DuseExternalCluster=true -Dhadoop.conf.dir=/my/hadoop/conf
+```
