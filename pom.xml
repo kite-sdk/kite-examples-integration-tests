@@ -36,7 +36,12 @@
 
   <properties>
     <!-- Keep this updated to the latest Kite release! -->
-    <kite-version>0.16.1-SNAPSHOT</kite-version>
+    <kite.version>0.16.1-SNAPSHOT</kite.version>
+    <cdh5.version>5.1.2</cdh5.version>
+    <vers.flume>1.5.0-cdh${cdh5.version}</vers.flume>
+    <vers.hadoop-cdh5>2.3.0-cdh${cdh5.version}</vers.hadoop-cdh5>
+    <vers.hive>0.12.0-cdh${cdh5.version}</vers.hive>
+    <vers.parquet>1.2.5-cdh${cdh5.version}</vers.parquet>
     <hadoop.conf.dir>/etc/hadoop/conf</hadoop.conf.dir>
   </properties>
 

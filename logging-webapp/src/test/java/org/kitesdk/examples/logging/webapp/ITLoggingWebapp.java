@@ -17,32 +17,32 @@ package org.kitesdk.examples.logging.webapp;
 
 import com.google.common.io.Resources;
 import java.io.File;
-import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.rules.TemporaryFolder;
-import org.kitesdk.data.flume.Log4jAppender;
-import org.kitesdk.examples.common.Cluster;
-import org.kitesdk.examples.logging.CreateDataset;
-import org.kitesdk.examples.logging.DeleteDataset;
-import org.kitesdk.examples.logging.ReadDataset;
 import java.io.IOException;
 import org.apache.catalina.core.AprLifecycleListener;
 import org.apache.catalina.core.StandardServer;
 import org.apache.catalina.startup.Tomcat;
+import org.apache.commons.io.FileUtils;
+import org.apache.flume.clients.log4jappender.Log4jAppender;
 import org.apache.http.client.fluent.Request;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+import org.kitesdk.examples.common.Cluster;
+import org.kitesdk.examples.logging.CreateDataset;
+import org.kitesdk.examples.logging.DeleteDataset;
+import org.kitesdk.examples.logging.ReadDataset;
 
-import static org.kitesdk.examples.common.TestUtil.run;
 import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.junit.matchers.JUnitMatchers.containsString;
+import static org.kitesdk.examples.common.TestUtil.run;
 
 public class ITLoggingWebapp {
 
@@ -59,6 +59,7 @@ public class ITLoggingWebapp {
     FileUtils.copyURLToFile(Resources.getResource("flume.properties"), flumeProperties);
     cluster = new Cluster.Builder()
         .addHdfsService()
+        .addHiveMetastoreService()
         .addFlumeAgent("tier1", flumeProperties)
         .build();
     cluster.start();
@@ -68,8 +69,12 @@ public class ITLoggingWebapp {
 
   @Before
   public void setUp() throws Exception {
-    // delete dataset in case it already exists
-    run(any(Integer.class), any(String.class), new DeleteDataset());
+    try {
+      // delete dataset in case it already exists
+      run(any(Integer.class), any(String.class), new DeleteDataset());
+    } catch (Exception e) {
+      // ignore - TODO: need to make sure DeleteDataset does not throw exception
+    }
 
     startTomcat();
   }
@@ -86,8 +91,7 @@ public class ITLoggingWebapp {
     appender.setName("flume");
     appender.setHostname("localhost");
     appender.setPort(41415);
-    appender.setDatasetRepositoryUri("repo:hdfs:/tmp/data");
-    appender.setDatasetName("events");
+    appender.setUnsafeMode(true);
     appender.activateOptions();
 
     Logger.getLogger("org.kitesdk.examples.logging.webapp.LoggingServlet").addAppender(appender);

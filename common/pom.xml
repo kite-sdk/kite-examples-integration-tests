@@ -31,10 +31,28 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.apache.hadoop</groupId>
-      <artifactId>hadoop-client</artifactId>
-      <version>2.0.0-mr1-cdh4.4.0</version>
+      <groupId>org.kitesdk</groupId>
+      <artifactId>kite-data-core</artifactId>
+      <version>${kite.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.kitesdk</groupId>
+      <artifactId>kite-hadoop-cdh5-dependencies</artifactId>
+      <version>${kite.version}</version>
+      <type>pom</type>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.twitter</groupId>
+      <artifactId>parquet-avro</artifactId>
+      <version>${vers.parquet}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.hadoop</groupId>
+          <artifactId>hadoop-core</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -45,21 +63,14 @@
 
     <dependency>
       <groupId>org.apache.hadoop</groupId>
-      <artifactId>hadoop-common</artifactId>
-      <version>2.0.0-cdh4.4.0</version>
-      <type>test-jar</type>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.hadoop</groupId>
-      <artifactId>hadoop-hdfs</artifactId>
-      <version>2.0.0-cdh4.4.0</version>
-      <type>test-jar</type>
+      <artifactId>hadoop-minicluster</artifactId>
+      <version>${vers.hadoop-cdh5}</version>
     </dependency>
 
     <dependency>
       <groupId>org.apache.flume</groupId>
       <artifactId>flume-ng-node</artifactId>
-      <version>1.4.0-cdh4.4.0</version>
+      <version>${vers.flume}</version>
       <exclusions>
         <exclusion>
           <groupId>org.mortbay.jetty</groupId>
@@ -67,11 +78,32 @@
         </exclusion>
       </exclusions>
     </dependency>
+    <!-- TODO: use the following instead of bundling the DatasetSink classes
+         directly when FLUME-2469 is released -->
+    <!--<dependency>-->
+      <!--<groupId>org.apache.flume.flume-ng-sinks</groupId>-->
+      <!--<artifactId>flume-dataset-sink</artifactId>-->
+      <!--<version>${vers.flume}</version>-->
+      <!--<exclusions>-->
+        <!--<exclusion>-->
+          <!--<groupId>org.kitesdk</groupId>-->
+          <!--<artifactId>kite-data-core</artifactId>-->
+        <!--</exclusion>-->
+        <!--<exclusion>-->
+          <!--<groupId>org.apache.avro</groupId>-->
+          <!--<artifactId>avro</artifactId>-->
+        <!--</exclusion>-->
+        <!--<exclusion>-->
+          <!--<groupId>org.apache.hadoop</groupId>-->
+          <!--<artifactId>hadoop-common</artifactId>-->
+        <!--</exclusion>-->
+      <!--</exclusions>-->
+    <!--</dependency>-->
 
     <dependency>
       <groupId>org.apache.hive</groupId>
       <artifactId>hive-metastore</artifactId>
-      <version>0.10.0-cdh4.4.0</version>
+      <version>${vers.hive}</version>
       <exclusions>
         <exclusion>
           <groupId>org.apache.hive</groupId>
@@ -82,7 +114,7 @@
     <dependency>
       <groupId>org.apache.hive</groupId>
       <artifactId>hive-common</artifactId>
-      <version>0.10.0-cdh4.4.0</version>
+      <version>${vers.hive}</version>
     </dependency>
 
   </dependencies>
