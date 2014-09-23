@@ -80,8 +80,12 @@ public class ITLoggingWebapp {
   }
 
   @AfterClass
-  public static void stopCluster() throws Exception {
-    cluster.stop();
+  public static void stopCluster() {
+    try {
+      cluster.stop();
+    } catch (Exception e) {
+      // ignore problems during shutdown
+    }
   }
 
   private static void configureLog4j() throws Exception {
@@ -115,19 +119,19 @@ public class ITLoggingWebapp {
   }
 
   private void startTomcat() throws Exception {
-    String appBase = "target/wars/logging-webapp.war";
     tomcat = new Tomcat();
     tomcat.setPort(8080);
 
-    tomcat.setBaseDir(".");
-    tomcat.getHost().setAppBase(".");
-
-    String contextPath = "/logging-webapp";
+    File tomcatBaseDir = new File("target/tomcat");
+    tomcatBaseDir.mkdirs();
+    tomcat.setBaseDir(tomcatBaseDir.getAbsolutePath());
 
     StandardServer server = (StandardServer) tomcat.getServer();
     server.addLifecycleListener(new AprLifecycleListener());
 
-    tomcat.addWebapp(contextPath, appBase);
+    String contextPath = "/logging-webapp";
+    File warFile = new File("target/wars/logging-webapp.war");
+    tomcat.addWebapp(contextPath, warFile.getAbsolutePath());
     tomcat.start();
   }
 

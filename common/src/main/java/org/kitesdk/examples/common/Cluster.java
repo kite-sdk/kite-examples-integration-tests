@@ -42,7 +42,7 @@ public class Cluster {
     } else {
       logger.info("Stopping in-VM cluster");
     }
-    for (Service service : services) {
+    for (Service service : Lists.reverse(services)) {
       service.stop();
     }
   }

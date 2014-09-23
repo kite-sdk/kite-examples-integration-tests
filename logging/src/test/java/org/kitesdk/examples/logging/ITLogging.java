@@ -66,7 +66,11 @@ public class ITLogging {
 
   @AfterClass
   public static void stopCluster() throws Exception {
-    cluster.stop();
+    try {
+      cluster.stop();
+    } catch (Exception e) {
+      // ignore problems during shutdown
+    }
   }
 
   private static void configureLog4j() throws Exception {
