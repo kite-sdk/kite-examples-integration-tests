@@ -18,6 +18,7 @@ package org.kitesdk.examples.logging;
 import com.google.common.io.Resources;
 import java.io.File;
 import org.apache.commons.io.FileUtils;
+import org.apache.flume.clients.log4jappender.Log4jAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.AfterClass;
@@ -26,7 +27,6 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.kitesdk.data.flume.Log4jAppender;
 import org.kitesdk.examples.common.Cluster;
 
 import static org.kitesdk.examples.common.TestUtil.run;
@@ -46,6 +46,7 @@ public class ITLogging {
     FileUtils.copyURLToFile(Resources.getResource("flume.properties"), flumeProperties);
     cluster = new Cluster.Builder()
         .addHdfsService()
+        .addHiveMetastoreService()
         .addFlumeAgent("tier1", flumeProperties)
         .build();
     cluster.start();
@@ -54,14 +55,22 @@ public class ITLogging {
   }
 
   @Before
-  public void setUp() throws Exception {
-    // delete dataset in case it already exists
-    run(any(Integer.class), any(String.class), new DeleteDataset());
+  public void setUp() {
+    try {
+      // delete dataset in case it already exists
+      run(any(Integer.class), any(String.class), new DeleteDataset());
+    } catch (Exception e) {
+      // ignore - TODO: need to make sure DeleteDataset does not throw exception
+    }
   }
 
   @AfterClass
   public static void stopCluster() throws Exception {
-    cluster.stop();
+    try {
+      cluster.stop();
+    } catch (Exception e) {
+      // ignore problems during shutdown
+    }
   }
 
   private static void configureLog4j() throws Exception {
@@ -71,8 +80,7 @@ public class ITLogging {
     appender.setName("flume");
     appender.setHostname("localhost");
     appender.setPort(41415);
-    appender.setDatasetRepositoryUri("repo:hdfs:/tmp/data");
-    appender.setDatasetName("events");
+    appender.setUnsafeMode(true);
     appender.activateOptions();
 
     Logger.getLogger(org.kitesdk.examples.logging.App.class).addAppender(appender);

@@ -54,7 +54,7 @@
     <dependency>
       <groupId>org.kitesdk.examples</groupId>
       <artifactId>logging</artifactId>
-      <version>${kite-version}</version>
+      <version>${kite.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -101,7 +101,7 @@
                 <artifactItem>
                   <groupId>org.kitesdk.examples</groupId>
                   <artifactId>logging-webapp</artifactId>
-                  <version>${kite-version}</version>
+                  <version>${kite.version}</version>
                   <type>war</type>
                   <destFileName>logging-webapp.war</destFileName>
                 </artifactItem>

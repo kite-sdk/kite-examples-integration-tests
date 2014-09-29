@@ -39,7 +39,7 @@
     <dependency>
       <groupId>org.kitesdk.examples</groupId>
       <artifactId>logging</artifactId>
-      <version>${kite-version}</version>
+      <version>${kite.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

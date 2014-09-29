@@ -10,7 +10,8 @@ class HdfsService implements Cluster.Service {
 
   @Override
   public void start() throws IOException {
-    new MiniDFSCluster.Builder(new Configuration()).nameNodePort(8020).build();
+    hdfsCluster = new MiniDFSCluster.Builder(new Configuration()).nameNodePort(8020)
+        .build();
   }
 
   @Override
