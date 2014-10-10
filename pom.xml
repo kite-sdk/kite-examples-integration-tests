@@ -22,7 +22,7 @@
 
   <groupId>org.kitesdk.examples</groupId>
   <artifactId>integration-tests</artifactId>
-  <version>0.16.1-SNAPSHOT</version>
+  <version>0.17.0</version>
   <packaging>pom</packaging>
 
   <name>Kite Examples Integration Tests</name>
