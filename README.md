@@ -1,5 +1,8 @@
 # Kite Examples Integration Tests
 
+**Note that this repository is deprecated since the tests now live with the examples in
+[https://github.com/kite-sdk/kite-examples](https://github.com/kite-sdk/kite-examples)**
+
 A set of integration tests for the [Kite Examples](https://github.com/kite-sdk/kite-examples).
 
 ## Running
